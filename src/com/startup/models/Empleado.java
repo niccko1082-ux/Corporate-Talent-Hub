@@ -16,7 +16,39 @@ public class Empleado {
     public static void main (String[] args){
         System.out.println("""
                 Encabezado del sistema""");
+
+        Empleado emp1 = new Empleado();
+        Empleado emp2 = new Empleado();
+
+        EmpresaRecord miEmpresa = new EmpresaRecord("Mi Nueva Empresa", 9000123, "2005-09-12");
+
+        emp1 = null;
+
+        try{
+            System.out.println("Longitud del string: " + emp1.length());
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        /*
+        * En Java 8 el NullPointerException simplemente indicaba que habia
+        *  un error, pero no decia donde se encontrava. Ahora el Helpful
+        * le indica que tiene el error y te muestra exactamente donde
+        *  esta, Lo que facilita la busqueda del error y se optimiza mas
+        * tiempo
+        */
+
+        /*
+        * Comparar dos objetos(A, B) con (==) lo que se hace internamente
+        *  es coparar si la direccion de memoria que tiene A es la misma
+        * de B. Esto sucede debido a que el contenido de A se guarda en un
+        *  espacio de memoria (HEAP) la cual esta refereciada por el
+        * nombre que esta en (STACK). Aca es donde al comparar se genera
+        *  un error de referencia ya que B tiene una referencia en (HEAP)
+        *  diferente a la de A
+        */
+
     }
+
 
 
     public record EmpresaRecord(String nombre, int nit, String fechaFundacion) {
