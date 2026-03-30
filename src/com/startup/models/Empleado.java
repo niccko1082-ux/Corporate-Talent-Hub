@@ -11,7 +11,7 @@ public class Empleado {
     double n6 = 20.15;
     char l1 = 'n';
     boolean isTrue = true;
-    String str = "nicolas";
+
 
     public static void main (String[] args){
         System.out.println("""
@@ -35,4 +35,36 @@ public class Empleado {
     cada uno de sus campos son declarados directamente como private final. Es usualmente usado para modelar datos, en caso de igresar un nuevo dato
     se tendria que usan una nueva instacia.
     */
+
+        int IdEmpleado = 100;
+        double salarioBase = 2000000;
+        double bonoMensual = 10000;
+        int puntaheTest = 90;
+        int edad = 20;
+        int idSede = 1;
+        boolean esActivo = false;
+
+        /*
+        * Logica aritmetica y jerarquia de operadores.
+        * 1. Solucion de parentesis internos : (bonoMensual * 1.10) y (salariobase * 0.05)
+        * 2. Suma : salarioBase + resultado del primer parentesis
+        * 3. Resta : resultado anterior - resultado del segundo parentesis
+        */
+
+
+
+    public double calcularSalarioFinal(){
+        this.bonoMensual += 1000;
+
+        double salarioFinal = (salarioBase + (bonoMensual * 1.10) - (salarioBase * 0.05));
+        return salarioFinal;
+    }
+
+    public boolean tieneBonoPorIdPar(){
+        return (IdEmpleado % 2 == 0);
+    }
+
+    public boolean validarElegibilidad(){
+        return (puntaheTest > 85 && edad < 30) || (idSede == 1 && !esActivo);
+    }
 }
