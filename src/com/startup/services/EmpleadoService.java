@@ -27,4 +27,12 @@ public class EmpleadoService {
     public boolean validarElegibilidad(Empleado emp) {
         return (emp.puntajeTest > 85 && emp.edad < 30) || (emp.idSede == 1 && !emp.esActivo);
     }
+
+    public String obtenerCategoriaSalarial(Empleado emp){
+       return switch ((Integer) (int) emp.salarioBase) {
+            case Integer s when s < 500 -> "Junior";
+            case Integer s when s < 1000 -> "Mid";
+            default -> "Seniority";
+        };
+    }
 }
