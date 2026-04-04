@@ -22,6 +22,7 @@ public class SoporteTematico {
                         5) Validar float / double
                         6) Validar char
                         7) Validar boolean
+                        8) Matriz de Desempeño
                         0) Volver
                     """);
 
@@ -129,6 +130,9 @@ public class SoporteTematico {
                         System.out.println("Inválido  →  un boolean solo acepta \"true\" o \"false\".");
                     }
                 }
+
+                // ─────────────────────────────────────────────────────────────
+                case 8 -> MatrizDesempeno.ejecutar();
 
                 // ─────────────────────────────────────────────────────────────
                 case 0 -> System.out.println("Saliendo...");
