@@ -35,4 +35,14 @@ public class EmpleadoService {
             default -> "Seniority";
         };
     }
+
+    /**
+     * Guarda un empleado mostrando sus datos en consola.
+     */
+    public static void guardar(Empleado emp) {
+        System.out.println("Empleado guardado exitosamente:");
+        System.out.println("  Nombre: " + emp.nombre);
+        System.out.println("  Salario Base: " + emp.salarioBase);
+        System.out.println("  Fecha de Nacimiento: " + emp.fechaNacimiento);
+    }
 }

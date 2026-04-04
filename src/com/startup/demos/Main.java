@@ -66,19 +66,19 @@ public class Main {
         Scanner sc = new Scanner(System.in);
         int opciones;
 
-        do{
-        System.out.println("""
-                ======Menu Principal======
-                1) Calcular Salaario Final.
-                2) Verificar bono por ID par.
-                3) Validar Elegibilidad.
-                4) Mostrar Categoria Salario
-                0) Salir.
-                =========================""");
+        do {
+            System.out.println("""
+                    ======Menu Principal======
+                    1) Calcular Salaario Final.
+                    2) Verificar bono por ID par.
+                    3) Validar Elegibilidad.
+                    4) Mostrar Categoria Salario
+                    0) Salir.
+                    =========================""");
 
-        opciones = sc.nextInt();
+            opciones = sc.nextInt();
 
-            switch (opciones){
+            switch (opciones) {
                 case 1:
                     System.out.println("Salario " + service.calcularSalarioFinal(emp1));
                     break;
@@ -94,13 +94,17 @@ public class Main {
                     System.out.println("Opcion invalida");
 
             }
-        }while(opciones != 0);
+        } while (opciones != 0);
 
         /*
-        * La diferencia entre usar switch legacy(Java 8) y switch modern(Java 17+)
-        * es que la legacy al momento de olvidar escribir break, pasa al siguiente case, ejecuta lo que tenga y
-        * asi hasta encontrar un brake, lo que genera resultados inespetados. En la Opcion creada para Java 17
-        * en adelante, cada case al terminar, tiene su propio break sin tener que ponerlo*/
+         * La diferencia entre usar switch legacy(Java 8) y switch modern(Java 17+)
+         * es que la legacy al momento de olvidar escribir break, pasa al siguiente
+         * case, ejecuta lo que tenga y
+         * asi hasta encontrar un brake, lo que genera resultados inespetados. En la
+         * Opcion creada para Java 17
+         * en adelante, cada case al terminar, tiene su propio break sin tener que
+         * ponerlo
+         */
 
         System.out.println("Salario final:       " + service.calcularSalarioFinal(emp1));
         System.out.println("Bono por ID par:     " + service.tieneBonoPorIdPar(emp1));
