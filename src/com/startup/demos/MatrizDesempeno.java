@@ -1,5 +1,6 @@
 package com.startup.demos;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 /**
@@ -40,7 +41,26 @@ public class MatrizDesempeno {
 
             for (int j = 0; j < TRIMESTRES; j++) {
                 System.out.print("  Trimestre " + (j + 1) + ": ");
-                var calificacion = teclado.nextDouble();
+                
+                double calificacion = 0;
+                
+                try {
+                    calificacion = teclado.nextDouble();
+                } catch (InputMismatchException e) {
+                    /*
+                     * Análisis LTS (Java 8 vs Java 17/21) - Diagnóstico detallado:
+                     * En Java 8, los mensajes trazados en excepciones solían ser muy opacos. 
+                     * Por ejemplo, un NullPointerException solo señalaba la línea, sin 
+                     * identificar la variable involucrada.
+                     * A partir de Java 14 (y siendo el estándar en LTS Java 17/21), 
+                     * los "Helpful NullPointerExceptions" detallan exactamente qué variable o 
+                     * método originó el fallo, mejorando radicalmente la observabilidad 
+                     * y el diagnóstico de la máquina virtual moderna.
+                     */
+                    System.out.println("  ⚠ InputMismatchException capturada: No ingresaste un formato numérico válido.");
+                    teclado.nextLine(); // Limpiamos el token inválido del buffer
+                    calificacion = -1;  // Forzamos el valor a salir del rango [0, 100]
+                }
 
                 // Validar rango con if / else
                 if (calificacion < 0 || calificacion > 100) {
@@ -56,9 +76,9 @@ public class MatrizDesempeno {
 
         // 2. Recorrer la matriz con for anidados → calcular promedios
         System.out.println("═══ REPORTE DE DESEMPEÑO ═══");
-        System.out.printf("%-12s | %6s | %6s | %6s | %10s | %10s%n",
-                "Coder", "T1", "T2", "T3", "Promedio", "Puntaje (int)");
-        System.out.println("─".repeat(68));
+        System.out.printf("%-12s | %6s | %6s | %6s | %10s | %10s | %10s%n",
+                "Coder", "T1", "T2", "T3", "Promedio", "Puntaje", "Promoción");
+        System.out.println("─".repeat(80));
 
         var promedios = new double[empleados];
 
@@ -84,14 +104,18 @@ public class MatrizDesempeno {
              */
             int puntajeSimplificado = (int) promedios[i];
 
-            System.out.printf("%-12s | %6.1f | %6.1f | %6.1f | %10.2f | %10d%n",
+            // ── Uso de Operador Ternario para decidir el estado de promoción ──
+            var estadoPromocion = (promedios[i] >= 80.0) ? "Aprobado" : "Rechazado";
+
+            System.out.printf("%-12s | %6.1f | %6.1f | %6.1f | %10.2f | %10d | %10s%n",
                     NOMBRES[i],
                     matriz[i][0], matriz[i][1], matriz[i][2],
                     promedios[i],
-                    puntajeSimplificado);
+                    puntajeSimplificado,
+                    estadoPromocion);
         }
 
-        System.out.println("─".repeat(68));
+        System.out.println("─".repeat(80));
 
         // 3. Documentar la pérdida de precisión del casting
        
