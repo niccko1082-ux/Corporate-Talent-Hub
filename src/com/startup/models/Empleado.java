@@ -8,13 +8,16 @@ package com.startup.models;
 public class Empleado {
 
     public int idEmpleado;
+    public String nombre;
     public double salarioBase;
     public double bonoMensual;
     public int puntajeTest;
     public int edad;
     public int idSede;
     public boolean esActivo;
+    public String fechaNacimiento;
 
+    // Constructor completo (existente)
     public Empleado(int idEmpleado, double salarioBase, double bonoMensual,
                     int puntajeTest, int edad, int idSede, boolean esActivo) {
         this.idEmpleado = idEmpleado;
@@ -24,5 +27,12 @@ public class Empleado {
         this.edad = edad;
         this.idSede = idSede;
         this.esActivo = esActivo;
+    }
+
+    // Constructor para captura rápida (nombre, salario, fechaNacimiento)
+    public Empleado(String nombre, double salarioBase, String fechaNacimiento) {
+        this.nombre = nombre;
+        this.salarioBase = salarioBase;
+        this.fechaNacimiento = fechaNacimiento;
     }
 }
