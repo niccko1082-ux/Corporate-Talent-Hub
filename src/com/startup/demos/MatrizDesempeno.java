@@ -57,7 +57,7 @@ public class MatrizDesempeno {
                      * método originó el fallo, mejorando radicalmente la observabilidad 
                      * y el diagnóstico de la máquina virtual moderna.
                      */
-                    System.out.println("  ⚠ InputMismatchException capturada: No ingresaste un formato numérico válido.");
+                    System.out.println("InputMismatchException capturada: No ingresaste un formato numérico válido.");
                     teclado.nextLine(); // Limpiamos el token inválido del buffer
                     calificacion = -1;  // Forzamos el valor a salir del rango [0, 100]
                 }

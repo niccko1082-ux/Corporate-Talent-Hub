@@ -3,7 +3,7 @@ package com.startup.demos;
 import com.startup.models.Empleado;
 import com.startup.models.EmpresaRecord;
 import com.startup.services.EmpleadoService;
-import java.util.Scanner;
+import com.startup.util.InputUtils;
 
 /**
  * Clase de demostración.
@@ -43,8 +43,8 @@ public class Main {
          * memoria (referencia en HEAP) y no el contenido. Por eso dos
          * objetos distintos con los mismos valores nunca son == entre sí.
          */
-        Empleado emp1 = new Empleado(100, 200, 10000, 90, 20, 1, false);
-        Empleado emp2 = new Empleado(101, 1800000, 8000, 80, 25, 2, true);
+        Empleado emp1 = new Empleado(100, "Legacy 1", 200, 10000, 90, 20, 1, false);
+        Empleado emp2 = new Empleado(101, "Legacy 2", 1800000, 8000, 80, 25, 2, true);
 
         emp1 = null;
 
@@ -59,55 +59,67 @@ public class Main {
         System.out.println("Empresa: " + miEmpresa);
 
         // --- Demo: EmpleadoService ---
-        EmpleadoService service = new EmpleadoService();
-        emp1 = emp2; // reasignamos para continuar la demo
+        // Agregamos algunos datos iniciales para la demo
+        EmpleadoService.agregarEmpleado(new Empleado(1, "Alice", 2500, 500, 95, 25, 1, true));
+        EmpleadoService.agregarEmpleado(new Empleado(2, "Bob", 1500, 300, 80, 30, 2, true));
+        EmpleadoService.agregarEmpleado(new Empleado(3, "Charlie", 3500, 800, 88, 28, 1, true));
 
-        // --- Demo: Menu Switch ---
-        Scanner sc = new Scanner(System.in);
-        int opciones;
+        // --- Demo: Menu Switch Moderno ---
+        var opciones = -1;
 
         do {
             System.out.println("""
-                    ======Menu Principal======
-                    1) Calcular Salaario Final.
-                    2) Verificar bono por ID par.
-                    3) Validar Elegibilidad.
-                    4) Mostrar Categoria Salario
-                    0) Salir.
-                    =========================""");
+                    ====== SISTEMA DE GESTION (MODERNO) ======
+                    1) Registrar Empleado 
+                    2) Listar Empleados 
+                    3) Buscar Empleado (HashMap O(1))
+                    4) Ver Primero/Ultimo (Sequenced)
+                    5) Ver Lista Inversa
+                    6) Eliminar por Bajo Puntaje
+                    7) Generar Reporte Final
+                    0) Salir
+                    =========================================""");
 
-            opciones = sc.nextInt();
+            opciones = InputUtils.leerEntero("Seleccione");
 
             switch (opciones) {
-                case 1:
-                    System.out.println("Salario " + service.calcularSalarioFinal(emp1));
-                    break;
-                case 2:
-                    System.out.println("Bono par " + service.tieneBonoPorIdPar(emp1));
-                    break;
-                case 3:
-                    System.out.println("Elegible " + service.validarElegibilidad(emp1));
-                    break;
-                case 4:
-                    System.out.println("Categaria: " + service.obtenerCategoriaSalarial(emp1));
-                default:
-                    System.out.println("Opcion invalida");
-
+                case 1 -> {
+                    int id = InputUtils.leerEntero("ID");
+                    String nom = InputUtils.leerString("Nombre");
+                    double sal = InputUtils.leerDouble("Salario");
+                    int pun = InputUtils.leerEntero("Puntaje");
+                    EmpleadoService.agregarEmpleado(new Empleado(id, nom, sal, 500, pun, 25, 1, true));
+                }
+                case 2 -> EmpleadoService.listarEmpleados();
+                case 3 -> {
+                    int id = InputUtils.leerEntero("Ingrese ID a buscar");
+                    var emp = EmpleadoService.buscarEmpleado(id);
+                    if (emp != null) {
+                        System.out.println("Encontrado: " + emp.nombre + " | Puntaje: " + emp.puntajeTest);
+                    } else {
+                        System.out.println("No se encontró el empleado.");
+                    }
+                }
+                case 4 -> {
+                    var primero = EmpleadoService.obtenerPrimerEmpleado();
+                    var ultimo = EmpleadoService.obtenerUltimoEmpleado();
+                    System.out.println("Primer Empleado: " + (primero != null ? primero.nombre : "Vacio"));
+                    System.out.println("Ultimo Empleado: " + (ultimo != null ? ultimo.nombre : "Vacio"));
+                }
+                case 5 -> {
+                    System.out.println("--- Lista en Orden Inverso ---");
+                    for (var emp : EmpleadoService.obtenerListaInversa()) {
+                        System.out.println(emp.nombre);
+                    }
+                }
+                case 6 -> {
+                    int min = InputUtils.leerEntero("Puntaje minimo");
+                    EmpleadoService.eliminarPorBajoPuntaje(min);
+                }
+                case 7 -> EmpleadoService.generarReporteFinal();
+                case 0 -> System.out.println("Saliendo...");
+                default -> System.out.println("Opcion invalida");
             }
         } while (opciones != 0);
-
-        /*
-         * La diferencia entre usar switch legacy(Java 8) y switch modern(Java 17+)
-         * es que la legacy al momento de olvidar escribir break, pasa al siguiente
-         * case, ejecuta lo que tenga y
-         * asi hasta encontrar un brake, lo que genera resultados inespetados. En la
-         * Opcion creada para Java 17
-         * en adelante, cada case al terminar, tiene su propio break sin tener que
-         * ponerlo
-         */
-
-        System.out.println("Salario final:       " + service.calcularSalarioFinal(emp1));
-        System.out.println("Bono por ID par:     " + service.tieneBonoPorIdPar(emp1));
-        System.out.println("Elegible:            " + service.validarElegibilidad(emp1));
     }
 }

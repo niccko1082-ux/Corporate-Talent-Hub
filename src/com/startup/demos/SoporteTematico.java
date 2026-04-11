@@ -2,15 +2,12 @@ package com.startup.demos;
 
 import com.startup.models.Empleado;
 import com.startup.services.EmpleadoService;
-
-import java.util.Scanner;
+import com.startup.util.InputUtils;
 
 public class SoporteTematico {
 
     public static void ejecutar() {
-
-        var teclado = new Scanner(System.in); // Java 11+
-        var opcion  = 0;
+        var opcion = 0;
 
         do {
             System.out.println("""
@@ -26,40 +23,33 @@ public class SoporteTematico {
                         0) Volver
                     """);
 
-            opcion = teclado.nextInt();
-            teclado.nextLine();
+            opcion = InputUtils.leerEntero("Seleccione una opción");
 
             switch (opcion) {
 
                 // ─────────────────────────────────────────────────────────────
                 case 1 -> {
-                    System.out.println("Ingrese el nombre del empleado:");
-                    var nombre = teclado.nextLine();
-
-                    System.out.println("Ingrese el salario del empleado:");
-                    var salario = teclado.nextDouble();
-                    teclado.nextLine();
-
-                    System.out.println("Ingrese la fecha de nacimiento (YYYY-MM-DD):");
-                    var fechaNacimiento = teclado.nextLine();
+                    var nombre         = InputUtils.leerString("Nombre del empleado");
+                    var salario        = InputUtils.leerDouble("Salario del empleado");
+                    var fechaNacimient = InputUtils.leerString("Fecha de nacimiento (YYYY-MM-DD)");
 
                     if (nombre.isBlank()) {
                         System.out.println("El nombre no puede estar vacío.");
                     } else if (salario <= 0) {
                         System.out.println("El salario debe ser mayor a 0.");
-                    } else if (fechaNacimiento.isBlank()) {
+                    } else if (fechaNacimient.isBlank()) {
                         System.out.println("La fecha de nacimiento no puede estar vacía.");
                     } else {
-                        var empleado = new Empleado(nombre, salario, fechaNacimiento);
-                        EmpleadoService.guardar(empleado);
+                        var empleado = new Empleado(nombre, salario, fechaNacimient);
+                        EmpleadoService.agregarEmpleado(empleado);
+                        System.out.println("Empleado registrado correctamente.");
                     }
                 }
 
                 // ─────────────────────────────────────────────────────────────
                 case 2 -> {
-                    System.out.println("Ingrese un número para validar como byte [ " + Byte.MIN_VALUE + " , " + Byte.MAX_VALUE + " ]:");
-                    var inputByte = teclado.nextLong();
-                    teclado.nextLine();
+                    System.out.println("Rango byte: [" + Byte.MIN_VALUE + " , " + Byte.MAX_VALUE + "]");
+                    var inputByte = (long) InputUtils.leerEntero("Ingrese un número");
 
                     if (inputByte >= Byte.MIN_VALUE && inputByte <= Byte.MAX_VALUE) {
                         System.out.println("Válido  →  byte: " + (byte) inputByte);
@@ -70,9 +60,8 @@ public class SoporteTematico {
 
                 // ─────────────────────────────────────────────────────────────
                 case 3 -> {
-                    System.out.println("Ingrese un número para validar como short [ " + Short.MIN_VALUE + " , " + Short.MAX_VALUE + " ]:");
-                    var inputShort = teclado.nextLong();
-                    teclado.nextLine();
+                    System.out.println("Rango short: [" + Short.MIN_VALUE + " , " + Short.MAX_VALUE + "]");
+                    var inputShort = (long) InputUtils.leerEntero("Ingrese un número");
 
                     if (inputShort >= Short.MIN_VALUE && inputShort <= Short.MAX_VALUE) {
                         System.out.println("Válido  →  short: " + (short) inputShort);
@@ -83,9 +72,8 @@ public class SoporteTematico {
 
                 // ─────────────────────────────────────────────────────────────
                 case 4 -> {
-                    System.out.println("Ingrese un número para validar como int [ " + Integer.MIN_VALUE + " , " + Integer.MAX_VALUE + " ]:");
-                    var inputInt = teclado.nextLong();
-                    teclado.nextLine();
+                    System.out.println("Rango int: [" + Integer.MIN_VALUE + " , " + Integer.MAX_VALUE + "]");
+                    var inputInt = (long) InputUtils.leerEntero("Ingrese un número");
 
                     if (inputInt >= Integer.MIN_VALUE && inputInt <= Integer.MAX_VALUE) {
                         System.out.println("Válido  →  int: " + (int) inputInt);
@@ -96,21 +84,19 @@ public class SoporteTematico {
 
                 // ─────────────────────────────────────────────────────────────
                 case 5 -> {
-                    System.out.println("Ingrese un número decimal para validar como float / double:");
-                    var inputDouble = teclado.nextDouble();
-                    teclado.nextLine();
+                    var inputDouble = InputUtils.leerDouble("Ingrese un número decimal (float / double)");
 
                     if (Double.isNaN(inputDouble) || Double.isInfinite(inputDouble)) {
                         System.out.println("Inválido  →  el valor no es un decimal representable.");
                     } else {
                         System.out.println("Válido  →  double: " + inputDouble);
+                        System.out.println("Como float: " + (float) inputDouble.doubleValue());
                     }
                 }
 
                 // ─────────────────────────────────────────────────────────────
                 case 6 -> {
-                    System.out.println("Ingrese un texto para validar como char (debe ser exactamente 1 carácter):");
-                    var inputChar = teclado.nextLine();
+                    var inputChar = InputUtils.leerString("Ingrese un texto para validar como char (1 carácter)");
 
                     if (inputChar.length() == 1) {
                         System.out.println("Válido  →  char: '" + inputChar.charAt(0) + "'");
@@ -121,8 +107,7 @@ public class SoporteTematico {
 
                 // ─────────────────────────────────────────────────────────────
                 case 7 -> {
-                    System.out.println("Ingrese un valor para validar como boolean (true / false):");
-                    var inputBool = teclado.nextLine().trim().toLowerCase();
+                    var inputBool = InputUtils.leerString("Ingrese un valor boolean (true / false)").trim().toLowerCase();
 
                     if (inputBool.equals("true") || inputBool.equals("false")) {
                         System.out.println("Válido  →  boolean: " + Boolean.parseBoolean(inputBool));
@@ -135,13 +120,11 @@ public class SoporteTematico {
                 case 8 -> MatrizDesempeno.ejecutar();
 
                 // ─────────────────────────────────────────────────────────────
-                case 0 -> System.out.println("Saliendo...");
+                case 0 -> System.out.println("Volviendo al menú principal...");
 
-                default  -> System.out.println("Opción no válida, intente de nuevo.");
+                default -> System.out.println("Opción no válida, intente de nuevo.");
             }
 
         } while (opcion != 0);
-
-        teclado.close();
     }
 }
