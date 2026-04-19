@@ -17,10 +17,10 @@ public class Empleado {
     public boolean esActivo;
     public String fechaNacimiento;
 
-    // Constructor completo (existente)
-    public Empleado(int idEmpleado, double salarioBase, double bonoMensual,
+    public Empleado(int idEmpleado, String nombre, double salarioBase, double bonoMensual,
                     int puntajeTest, int edad, int idSede, boolean esActivo) {
         this.idEmpleado = idEmpleado;
+        this.nombre = nombre;
         this.salarioBase = salarioBase;
         this.bonoMensual = bonoMensual;
         this.puntajeTest = puntajeTest;
