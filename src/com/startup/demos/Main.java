@@ -1,5 +1,6 @@
 package com.startup.demos;
 
+import com.startup.models.DesempenoReport;
 import com.startup.models.Empleado;
 import com.startup.models.EmpresaRecord;
 import com.startup.services.EmpleadoService;
@@ -43,8 +44,8 @@ public class Main {
          * memoria (referencia en HEAP) y no el contenido. Por eso dos
          * objetos distintos con los mismos valores nunca son == entre sí.
          */
-        Empleado emp1 = new Empleado(100, "Legacy 1", 200, 10000, 90, 20, 1, false);
-        Empleado emp2 = new Empleado(101, "Legacy 2", 1800000, 8000, 80, 25, 2, true);
+        Empleado emp1 = new Desarrollador(100, "Legacy 1", 10000);
+        Empleado emp2 = new Desarrollador(101, "Legacy 2", 8000);
 
         emp1 = null;
 
@@ -58,11 +59,11 @@ public class Main {
         EmpresaRecord miEmpresa = new EmpresaRecord("Mi Nueva Empresa", 9000123, "2005-09-12");
         System.out.println("Empresa: " + miEmpresa);
 
-        // --- Demo: EmpleadoService ---
         // Agregamos algunos datos iniciales para la demo
-        EmpleadoService.agregarEmpleado(new Empleado(1, "Alice", 2500, 500, 95, 25, 1, true));
-        EmpleadoService.agregarEmpleado(new Empleado(2, "Bob", 1500, 300, 80, 30, 2, true));
-        EmpleadoService.agregarEmpleado(new Empleado(3, "Charlie", 3500, 800, 88, 28, 1, true));
+        EmpleadoService.agregarEmpleado(new Desarrollador(1, "Alice", 2500, "Java"));
+        EmpleadoService.agregarEmpleado(new Desarrollador(2, "Bob", 1500, "Python"));
+        EmpleadoService.agregarEmpleado(new Desarrollador(3, "Charlie", 3500, "C#"));
+        EmpleadoService.agregarEmpleado(new Gerente(4, "David", 5000, 20000.0));
 
         // --- Demo: Menu Switch Moderno ---
         var opciones = -1;
@@ -77,6 +78,8 @@ public class Main {
                     5) Ver Lista Inversa
                     6) Eliminar por Bajo Puntaje
                     7) Generar Reporte Final
+                    8) Generar Reporte de Desempeño
+                    9) Demo InstanceOf (Legacy vs Moderno)
                     0) Salir
                     =========================================""");
 
@@ -88,14 +91,15 @@ public class Main {
                     String nom = InputUtils.leerString("Nombre");
                     double sal = InputUtils.leerDouble("Salario");
                     int pun = InputUtils.leerEntero("Puntaje");
-                    EmpleadoService.agregarEmpleado(new Empleado(id, nom, sal, 500, pun, 25, 1, true));
+                    String lang = InputUtils.leerString("Lenguaje Principal");
+                    EmpleadoService.agregarEmpleado(new Desarrollador(id, nom, sal, lang));
                 }
                 case 2 -> EmpleadoService.listarEmpleados();
                 case 3 -> {
                     int id = InputUtils.leerEntero("Ingrese ID a buscar");
                     var emp = EmpleadoService.buscarEmpleado(id);
                     if (emp != null) {
-                        System.out.println("Encontrado: " + emp.nombre + " | Puntaje: " + emp.puntajeTest);
+                        System.out.println("Encontrado: " + emp.getNombre() + " | Puntaje: " + emp.getPuntajeTest());
                     } else {
                         System.out.println("No se encontró el empleado.");
                     }
@@ -103,13 +107,13 @@ public class Main {
                 case 4 -> {
                     var primero = EmpleadoService.obtenerPrimerEmpleado();
                     var ultimo = EmpleadoService.obtenerUltimoEmpleado();
-                    System.out.println("Primer Empleado: " + (primero != null ? primero.nombre : "Vacio"));
-                    System.out.println("Ultimo Empleado: " + (ultimo != null ? ultimo.nombre : "Vacio"));
+                    System.out.println("Primer Empleado: " + (primero != null ? primero.getNombre() : "Vacio"));
+                    System.out.println("Ultimo Empleado: " + (ultimo != null ? ultimo.getNombre() : "Vacio"));
                 }
                 case 5 -> {
                     System.out.println("--- Lista en Orden Inverso ---");
                     for (var emp : EmpleadoService.obtenerListaInversa()) {
-                        System.out.println(emp.nombre);
+                        System.out.println(emp.getNombre());
                     }
                 }
                 case 6 -> {
@@ -117,6 +121,27 @@ public class Main {
                     EmpleadoService.eliminarPorBajoPuntaje(min);
                 }
                 case 7 -> EmpleadoService.generarReporteFinal();
+                case 8 -> {
+                    int id = InputUtils.leerEntero("Ingrese ID para el reporte");
+                    var emp = EmpleadoService.buscarEmpleado(id);
+                    if (emp != null) {
+                        DesempenoReport reporte = EmpleadoService.generarReporteIndividual(emp);
+                        System.out.println("REPORTE DE DESEMPEÑO");
+                        System.out.println(reporte);
+                    } else {
+                        System.out.println("No se encontró el empleado.");
+                    }
+                }
+                case 9 -> {
+                    int id = InputUtils.leerEntero("Ingrese ID para demo de casting");
+                    var emp = EmpleadoService.buscarEmpleado(id);
+                    if (emp != null) {
+                        EmpleadoService.mostrarHabilidadLegacy(emp);
+                        EmpleadoService.mostrarHabilidadModerna(emp);
+                    } else {
+                        System.out.println("No se encontró el empleado.");
+                    }
+                }
                 case 0 -> System.out.println("Saliendo...");
                 default -> System.out.println("Opcion invalida");
             }

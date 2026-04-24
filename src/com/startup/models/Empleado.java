@@ -1,11 +1,24 @@
 package com.startup.models;
 
 /**
- * Modelo de datos del Empleado.
- * Solo contiene atributos que describen la entidad.
- * La lógica de negocio está en EmpleadoService.
+ * ¿Por qué Sealed Classes para el diseño de APIs?
+ * 
+ * Al usar 'sealed' en lugar de herencia abierta (open inheritance), garantizamos:
+ * 1. Control de Jerarquía: El diseñador de la API decide exactamente quién puede extender la clase,
+ *    evitando que usuarios externos creen subtipos no autorizados que rompan la lógica del sistema.
+ * 2. Exhaustividad (Exhaustiveness): Permite al compilador verificar que todas las variantes han sido 
+ *    manejadas en estructuras como switch expressions, eliminando la necesidad de bloques 'default'.
+ * 3. Seguridad de Diseño: Evita problemas de acoplamiento accidental y garantiza que el 
+ *    comportamiento de la jerarquía sea predecible y finito.
  */
-public class Empleado {
+public abstract sealed class Empleado extends Persona permits Desarrollador, Gerente {
+    private final int idEmpleado;
+    private double salarioBase;
+    private double bonoMensual;
+    private int puntajeTest;
+    private int edad;
+    private int idSede;
+    private boolean esActivo;
 
     // Datos primitivos
     byte n1 = 120;
