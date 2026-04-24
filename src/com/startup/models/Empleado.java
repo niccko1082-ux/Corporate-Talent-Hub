@@ -1,5 +1,10 @@
 package com.startup.models;
 
+/**
+ * Modelo de datos del Empleado.
+ * Solo contiene atributos que describen la entidad.
+ * La lógica de negocio está en EmpleadoService.
+ */
 public class Empleado {
 
     // Datos primitivos
